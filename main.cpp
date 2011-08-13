@@ -1,11 +1,38 @@
 #include <QtGui/QApplication>
-#include "yatt.h"
+#include <QtGui/QTableView>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QDebug>
 
+#include "contesttable.h"
 
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    yatt foo;
-    foo.show();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("/home/thomas/test.db");
+    if ( !db.open() )
+    {
+        qDebug() << db.lastError();
+        qFatal( "Failed to connect." );
+        return 1;
+    }
+
+    int labs = 3;
+    int sections = 12;
+
+    QSqlQuery qry;
+    qry.prepare( "CREATE TABLE IF NOT EXISTS drivers (id INTEGER UNIQUE PRIMARY KEY, firstname VARCHAR(30), lastname VARCHAR(30), club VARCHAR(30), motobike VARCHAR(30), street VARCHAR(50), housenumber VARCHAR(10), postalcode VARCHAR(6), city VARCHAR(30), birtdate DATE)" );
+    if ( !qry.exec() ) qDebug() << qry.lastError();
+    else qDebug() << "Driver table created!";
+
+    qry.prepare( "CREATE TABLE IF NOT EXISTS points (id INTEGER UNIQUE PRIMARY KEY, driverId INTEGER, lab INTEGER, section INTEGER, points INTEGER)" );
+    if ( !qry.exec() ) qDebug() << qry.lastError();
+    else qDebug() << "Point table created!";
+
+    ContestTable(db, labs, sections, "test");
+
+    QObject::connect(&app, SIGNAL(aboutToQuit()), &app, SLOT(quit()));
+
     return app.exec();
 }
