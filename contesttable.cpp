@@ -39,6 +39,7 @@ ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString clas
     view->setWindowTitle(QObject::tr("Yatt Table Model"));
     view->show();
     view->resizeColumnsToContents();
+    view->hideColumn(0);
     g->addWidget(view, 0, 0);
   
 }
