@@ -22,24 +22,24 @@
 
 ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent) : className(className), QWidget(parent)
 {
-  QGridLayout *g = new QGridLayout();
-  this->setLayout(g);
+    QGridLayout *g = new QGridLayout();
+    this->setLayout(g);
   
     model = new YattTableModel(db, labs, sections, className);
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("First name"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Last name"));
-    for (int l = 1; l <= labs; l++) {
+    for (int l = 0; l < labs; l++) {
         for (int s = 1; s <= sections; s++) {
-            model->setHeaderData(((l-1)*sections+s+1), Qt::Horizontal, QObject::tr("p"));
+            model->setHeaderData((l*sections+s+1), Qt::Horizontal, QObject::tr("p"));
         }
     }
 
     view = new QTableView();
-    view->resizeColumnsToContents();
     view->setModel(model);
     view->setWindowTitle(QObject::tr("Yatt Table Model"));
     view->show();
-g->addWidget(view, 0, 0);
+    view->resizeColumnsToContents();
+    g->addWidget(view, 0, 0);
   
 }
 

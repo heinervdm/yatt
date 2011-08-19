@@ -46,6 +46,7 @@ DriverTable::DriverTable(QSqlDatabase db, QWidget* parent, Qt::WindowFlags f): Q
   QTableView *drivertable = new QTableView();
   drivertable->setModel(model);
   drivertable->show();
+  drivertable->resizeColumnsToContents();
   g->addWidget(drivertable);
 
 }
