@@ -18,9 +18,13 @@
 
 
 #include "contesttable.h"
+#include <QGridLayout>
 
-ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent) : QWidget(parent)
+ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent) : className(className), QWidget(parent)
 {
+  QGridLayout *g = new QGridLayout();
+  this->setLayout(g);
+  
     model = new YattTableModel(db, labs, sections, className);
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("First name"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Last name"));
@@ -30,11 +34,18 @@ ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString clas
         }
     }
 
-    view = new QTableView(parent);
+    view = new QTableView();
     view->resizeColumnsToContents();
     view->setModel(model);
     view->setWindowTitle(QObject::tr("Yatt Table Model"));
     view->show();
+g->addWidget(view, 0, 0);
+  
+}
+
+QString ContestTable::getTitle()
+{
+    return className;
 }
 
 #include "contesttable.moc"

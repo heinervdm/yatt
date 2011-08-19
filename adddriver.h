@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2011  Thomas Zimmermann <thomas.zimmermann@msc-dreckenach.de>
+    Copyright (C) 2011  Thomas Zimmermann <zimmermann@vdm-design.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,26 +17,17 @@
 */
 
 
-#ifndef CONTESTTABEL_H
-#define CONTESTTABEL_H
+#ifndef ADDDRIVER_H
+#define ADDDRIVER_H
 
 #include <QtGui/QWidget>
-#include <QtGui/QTableView>
-#include <QtSql/QSqlDatabase>
 
-#include "yatttablemodel.h"
 
-class ContestTable: public QWidget
+class AddDriver : public QWidget
 {
-    Q_OBJECT
 
 public:
-    ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent = 0);
-    QString getTitle();
-private:
-    YattTableModel *model;
-    QTableView *view;
-    QString className;
+AddDriver(QWidget* parent = 0, Qt::WindowFlags f = 0);
 };
 
-#endif // CONTESTTABEL_H
+#endif // ADDDRIVER_H

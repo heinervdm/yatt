@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "contesttable.h"
+#include "drivertable.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,9 +31,16 @@ int main(int argc, char *argv[])
     if ( !qry.exec() ) qDebug() << qry.lastError();
     else qDebug() << "Point table created!";
 
-    ContestTable(db, labs, sections, "test");
-
+    QTabWidget *w = new QTabWidget();
+    w->setTabPosition(QTabWidget::South);
+    DriverTable *dt =  new DriverTable(db, 0);
+    w->addTab(dt, "Drivers");
+    ContestTable *ct = new ContestTable(db, labs, sections, "test", 0);
+    w->addTab(ct, ct->getTitle());
+    
     QObject::connect(&app, SIGNAL(aboutToQuit()), &app, SLOT(quit()));
 
+    w->show();
+    
     return app.exec();
 }
