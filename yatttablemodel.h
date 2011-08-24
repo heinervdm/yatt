@@ -45,7 +45,7 @@ private:
     const int labs;
     const int sections;
     const QString className;
-    QVector<ContestData> contestData;
+    QVector<ContestData*> contestData;
 };
 
 #endif // YATTTABELMODEL_H

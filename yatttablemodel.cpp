@@ -51,25 +51,26 @@ QVariant YattTableModel::data(const QModelIndex& idx, int role) const
     if (!idx.isValid()) {return v;}
     if (role & ~(Qt::DisplayRole | Qt::EditRole)){return v;}
 
-    ContestData cd = contestData[idx.row()];
-//     if (cd.getId() < 0) return v;
-    if (idx.column() == 0) v = QVariant(cd.getId());
-    else if (idx.column() == 1) v = QVariant(cd.getFirstName());
-    else if (idx.column() == 2) v = QVariant(cd.getLastName());
-    else if (idx.column() == (3+(labs*(sections+2)))) v = QVariant(cd.getResult());
-    else if (idx.column() == (4+(labs*(sections+2)))) v = QVariant(cd.getCount(0));
-    else if (idx.column() == (5+(labs*(sections+2)))) v = QVariant(cd.getCount(1));
-    else if (idx.column() == (6+(labs*(sections+2)))) v = QVariant(cd.getCount(2));
-    else if (idx.column() == (7+(labs*(sections+2)))) v = QVariant(cd.getCount(3));
-    else if (idx.column() == (8+(labs*(sections+2)))) v = QVariant(cd.getCount(5));
+    qDebug() << "data(): row: " << idx.row();
+    ContestData *cd = contestData[idx.row()];
+    if (cd->getId() < 0) return v;
+    if (idx.column() == 0) v = QVariant(cd->getId());
+    else if (idx.column() == 1) v = QVariant(cd->getFirstName());
+    else if (idx.column() == 2) v = QVariant(cd->getLastName());
+    else if (idx.column() == (3+(labs*(sections+2)))) v = QVariant(cd->getResult());
+    else if (idx.column() == (4+(labs*(sections+2)))) v = QVariant(cd->getCount(0));
+    else if (idx.column() == (5+(labs*(sections+2)))) v = QVariant(cd->getCount(1));
+    else if (idx.column() == (6+(labs*(sections+2)))) v = QVariant(cd->getCount(2));
+    else if (idx.column() == (7+(labs*(sections+2)))) v = QVariant(cd->getCount(3));
+    else if (idx.column() == (8+(labs*(sections+2)))) v = QVariant(cd->getCount(5));
     else {
         int index = idx.column() - 3;
         int lab = index/(sections + 2) + 1;
         int section = index%(sections + 2) + 1;
         qDebug() << "Section: " << section << " of " << sections << ", lab: " << lab << " of " << labs;
-        if (section == (sections + 1)) v = QVariant(cd.getResult(lab));
-        else if (section == (sections + 2)) v = QVariant(cd.getCount(0, lab));
-        else if (cd.getPoints(lab,section) >= 0) v = QVariant(cd.getPoints(lab,section));
+        if (section == (sections + 1)) v = QVariant(cd->getResult(lab));
+        else if (section == (sections + 2)) v = QVariant(cd->getCount(0, lab));
+        else if (cd->getPoints(lab,section) >= 0) v = QVariant(cd->getPoints(lab,section));
     }
     qDebug() <<"data(): "<< v;
     return v;
@@ -79,9 +80,7 @@ QVariant YattTableModel::data(const QModelIndex& idx, int role) const
 int YattTableModel::rowCount(const QModelIndex &parent) const
 {
     qDebug() << "rowCount()";
-    int ret = 0;
-    QSqlQuery query = QSqlQuery("SELECT count(id) FROM drivers", dataBase);
-    if (query.exec() && query.next()) ret = query.value(0).toInt();
+    int ret =  contestData.count();
     qDebug() << ret;
     return ret;
 }
@@ -119,23 +118,30 @@ void YattTableModel::refresh()
         int i = 0;
         contestData.clear();
         if (dataBase.driver()->hasFeature(QSqlDriver::QuerySize)) contestData.resize(query.size());
-        else contestData.resize(rowCount());
+        else {
+	  int ret = 0;
+	  QSqlQuery query3 = QSqlQuery("SELECT count(id) FROM drivers", dataBase);
+	  if (query3.exec() && query3.next()) ret = query3.value(0).toInt();
+	  contestData.resize(ret);
+	}
         while (query.next()) {
             int id = query.value(0).toInt();
             QString firstname = query.value(1).toString();
             QString lastname = query.value(2).toString();
-            ContestData d = ContestData(id, firstname, lastname, labs, sections);
+            ContestData *d = new ContestData(id, firstname, lastname, labs, sections);
             QSqlQuery query2;
             query2.prepare("SELECT lab, section, points FROM points WHERE driverId = ?;");
             query2.bindValue(0, id);
             if ( !query2.exec() ) qDebug() << "refresh(): " << query.lastError();
             while (query2.next()) {
-                d.setPoints(query2.value(0).toInt(), query2.value(1).toInt(), query2.value(2).toInt());
+                d->setPoints(query2.value(0).toInt(), query2.value(1).toInt(), query2.value(2).toInt());
             }
+            qDebug() << "refresh(): " << i<< d->getId() << d->getFirstName();
             contestData[i] = d;
             i++;
         }
     }
+    for (int i = 0; i < contestData.count(); i++) qDebug() << "refresh: i=" << i << "id=" << contestData[i]->getId() << "firstname=" << contestData[i]->getFirstName();
 }
 
 bool YattTableModel::setPoints(const int driverId, const int lab, const int section, const int points)
@@ -165,8 +171,8 @@ bool YattTableModel::setPoints(const int driverId, const int lab, const int sect
     }
     if (ok) {
         for (int i = 0; i < contestData.count(); i++) {
-            if (contestData[i].getId() == driverId) {
-                contestData[driverId].setPoints(lab, sections, points);
+            if (contestData[i]->getId() == driverId) {
+                contestData[i]->setPoints(lab, sections, points);
                 refresh();
                 return true;
             }
