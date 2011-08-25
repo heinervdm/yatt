@@ -3,12 +3,15 @@
 
 #include <QtGui/QMainWindow>
 
-class yatt : public QMainWindow
+class Yatt : public QMainWindow
 {
 Q_OBJECT
 public:
-    yatt();
-    virtual ~yatt();
+    Yatt();
+    virtual ~Yatt();
+public slots:
+    void addDriver();
+    
 };
 
 #endif // yatt_H
