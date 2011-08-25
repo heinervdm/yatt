@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     QObject::connect(&app, SIGNAL(aboutToQuit()), &app, SLOT(quit()));
 
     w->show();
-    w->resize(800,600);
+    w->resize(1024,600);
     
     return app.exec();
 }

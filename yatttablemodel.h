@@ -22,6 +22,7 @@
 
 #include <QAbstractTableModel>
 #include <QtSql/QSqlDatabase>
+#include <QVariant>
 
 #include "contestdata.h"
 
@@ -37,6 +38,7 @@ public:
     QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant headerData(int sec, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 private:
     bool setPoints(const int driverId, const int lab, const int section, const int points);

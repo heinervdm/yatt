@@ -31,6 +31,35 @@ YattTableModel::~YattTableModel()
 {
 }
 
+QVariant YattTableModel::headerData(int sec, Qt::Orientation orientation, int role) const
+{
+    QVariant v;
+    if (role & ~(Qt::DisplayRole)){return v;}
+    if (orientation == Qt::Vertical) v = QVariant(sec);
+    else {
+      if (sec > 3) {
+          int idx = sec - 3;
+	  int lab = idx/(sections + 2) + 1;
+	  int section = idx%(sections + 2) + 1;
+	  if (lab <= labs && section <= sections) v = QVariant(section);
+	  else if (lab <= labs && section == sections+1) v = QVariant(("Total"));
+	  else if (lab <= labs && section == sections+2) v = QVariant(("Zeros"));
+	  else if (sec == (3+(labs*(sections+2)))) v = QVariant("Total");
+	  else if (sec == (4+(labs*(sections+2)))) v = QVariant("Zeros");
+	  else if (sec == (5+(labs*(sections+2)))) v = QVariant("Ones");
+	  else if (sec == (6+(labs*(sections+2)))) v = QVariant("Twos");
+	  else if (sec == (7+(labs*(sections+2)))) v = QVariant("Threes");
+	  else if (sec == (8+(labs*(sections+2)))) v = QVariant("Fives");
+      }
+      else {
+	if (sec == 0) v = QVariant(("Id"));
+	else if (sec == 1) v = QVariant(("Firstname"));
+	else if (sec == 2) v = QVariant(("Lastname"));
+      }
+    }
+    return v;
+}
+
 Qt::ItemFlags YattTableModel::flags(
     const QModelIndex &index) const
 {
