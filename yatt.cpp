@@ -2,6 +2,7 @@
 
 #include <QtGui/QTableView>
 #include <QtGui/QGridLayout>
+#include <QtGui/QBoxLayout>
 #include <QtGui/QPushButton>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
@@ -34,9 +35,11 @@ Yatt::Yatt()
     qry.prepare( "CREATE TABLE IF NOT EXISTS points (id INTEGER UNIQUE PRIMARY KEY, driverId INTEGER, lab INTEGER, section INTEGER, points INTEGER)" );
     if ( !qry.exec() ) qDebug() << qry.lastError();
     else qDebug() << "Point table created!";
-
-    QTabWidget *w = new QTabWidget();
-    w->setTabPosition(QTabWidget::South);
+    
+    QTabWidget *tab = new QTabWidget();
+    tab->setTabPosition(QTabWidget::South);
+    setCentralWidget(tab);
+    
     QWidget *dw = new QWidget();
     QGridLayout *g = new QGridLayout();
     dw->setLayout(g);
@@ -44,19 +47,20 @@ Yatt::Yatt()
     g->addWidget(dt,0,0);
     QPushButton *b = new QPushButton(QObject::tr("Add Driver"));
     g->addWidget(b,1,0);
-    w->addTab(dw, QObject::tr("Drivers"));
-    QObject::connect(b, SIGNAL(clicked(bool)), this, SLOT(close()));
+    tab->addTab(dw, QObject::tr("Drivers"));
+    connect(b, SIGNAL(clicked(bool)), this, SLOT(addDriverButtonClicked()));
     
     ContestTable *ct = new ContestTable(db, labs, sections, "test", 0);
-    w->addTab(ct, ct->getTitle());
+    tab->addTab(ct, ct->getTitle());
     
-    w->show();
-    w->resize(1024,600);
+    tab->show();
 }
 
-void Yatt::addDriver()
+void Yatt::addDriverButtonClicked()
 {
-    AddDriver *ad = new AddDriver();
+    qDebug() << "addDriver()";
+    AddDriver *ad = new AddDriver(this);
+    ad->show();
 }
 
 

@@ -37,19 +37,19 @@ QVariant YattTableModel::headerData(int sec, Qt::Orientation orientation, int ro
     if (role & ~(Qt::DisplayRole)){return v;}
     if (orientation == Qt::Vertical) v = QVariant(sec);
     else {
-      if (sec > 3) {
+      if (sec > 2) {
           int idx = sec - 3;
 	  int lab = idx/(sections + 2) + 1;
 	  int section = idx%(sections + 2) + 1;
 	  if (lab <= labs && section <= sections) v = QVariant(section);
-	  else if (lab <= labs && section == sections+1) v = QVariant(("Total"));
-	  else if (lab <= labs && section == sections+2) v = QVariant(("Zeros"));
-	  else if (sec == (3+(labs*(sections+2)))) v = QVariant("Total");
-	  else if (sec == (4+(labs*(sections+2)))) v = QVariant("Zeros");
-	  else if (sec == (5+(labs*(sections+2)))) v = QVariant("Ones");
-	  else if (sec == (6+(labs*(sections+2)))) v = QVariant("Twos");
-	  else if (sec == (7+(labs*(sections+2)))) v = QVariant("Threes");
-	  else if (sec == (8+(labs*(sections+2)))) v = QVariant("Fives");
+	  else if (lab <= labs && section == sections+1) v = QVariant(QObject::tr("Sum"));
+	  else if (lab <= labs && section == sections+2) v = QVariant(QObject::tr("Zeros"));
+	  else if (sec == (3+(labs*(sections+2)))) v = QVariant(QObject::tr("Total"));
+	  else if (sec == (4+(labs*(sections+2)))) v = QVariant(QObject::tr("Zeros"));
+	  else if (sec == (5+(labs*(sections+2)))) v = QVariant(QObject::tr("Ones"));
+	  else if (sec == (6+(labs*(sections+2)))) v = QVariant(QObject::tr("Twos"));
+	  else if (sec == (7+(labs*(sections+2)))) v = QVariant(QObject::tr("Threes"));
+	  else if (sec == (8+(labs*(sections+2)))) v = QVariant(QObject::tr("Fives"));
       }
       else {
 	if (sec == 0) v = QVariant(("Id"));
@@ -70,7 +70,7 @@ Qt::ItemFlags YattTableModel::flags(
     int lab = idx/(sections + 2) + 1;
     int section = idx%(sections + 2) + 1;
     if (lab > 0 && section > 0 && lab < labs && section < sections) flags |= Qt::ItemIsEditable;
-
+    else flags &=~ Qt::ItemIsSelectable;
     return flags;
 }
 

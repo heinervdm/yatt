@@ -22,7 +22,6 @@
 
 #include <QtGui/QWidget>
 
-
 class AddDriver : public QWidget
 {
 

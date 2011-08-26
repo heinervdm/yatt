@@ -6,11 +6,13 @@
 class Yatt : public QMainWindow
 {
 Q_OBJECT
+
 public:
     Yatt();
     virtual ~Yatt();
-public slots:
-    void addDriver();
+    
+private slots:
+    void addDriverButtonClicked();
     
 };
 

@@ -26,25 +26,25 @@
 AddDriver::AddDriver(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
 {
   QGridLayout *g = new QGridLayout(parent);
-  this->setLayout(g);
-  QLabel *l = new QLabel("Add new driver:");
-  g->addWidget(l, 0, 1, 0, 2, Qt::AlignHCenter);
+  setLayout(g);
+  QLabel *l = new QLabel(QObject::tr("Add new driver:"));
+  g->addWidget(l, 0, 0, 0, 2, Qt::AlignHCenter);
   
-  QLabel *firstname = new QLabel("Firstname:");
+  QLabel *firstname = new QLabel(QObject::tr("Firstname:"));
   g->addWidget(firstname, 1, 0, Qt::AlignLeft);
-  QLabel *lastname = new QLabel("Lastname:");
+  QLabel *lastname = new QLabel(QObject::tr("Lastname:"));
   g->addWidget(lastname, 2, 0, Qt::AlignLeft);
-  QLabel *club = new QLabel("Club:");
+  QLabel *club = new QLabel(QObject::tr("Club:"));
   g->addWidget(club, 3, 0, Qt::AlignLeft);
-  QLabel *motobike = new QLabel("Motobike:");
+  QLabel *motobike = new QLabel(QObject::tr("Motobike:"));
   g->addWidget(motobike, 4, 0, Qt::AlignLeft);
-  QLabel *street = new QLabel("Street:");
+  QLabel *street = new QLabel(QObject::tr("Street:"));
   g->addWidget(street, 5, 0, Qt::AlignLeft);
-  QLabel *postalcode = new QLabel("Postalcode:");
+  QLabel *postalcode = new QLabel(QObject::tr("Postalcode:"));
   g->addWidget(postalcode, 6, 2, 0, Qt::AlignLeft);
-  QLabel *city = new QLabel("City:");
+  QLabel *city = new QLabel(QObject::tr("City:"));
   g->addWidget(city, 7, 0, Qt::AlignLeft);
-  QLabel *birthdate = new QLabel("Birthdate:");
+  QLabel *birthdate = new QLabel(QObject::tr("Birthdate:"));
   g->addWidget(birthdate, 8, 0, Qt::AlignLeft);
   
 }

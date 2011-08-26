@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 
     Yatt *y = new Yatt();
     y->show();
+    y->resize(1024,600);
     
     QObject::connect(&app, SIGNAL(aboutToQuit()), y, SLOT(close()));
 

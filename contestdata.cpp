@@ -129,7 +129,6 @@ int ContestData::getCount(int p, int lab) const
         }
     }
     else {
-        if (lab >= points.count()) return 0;
         for (int j = 0; j < points[lab].count(); j++) {
             if (points[lab][j] == p) result++;
         }
