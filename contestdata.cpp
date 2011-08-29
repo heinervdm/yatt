@@ -87,15 +87,15 @@ int ContestData::getPoints(int lab, int section) const
         qDebug() << "getPoints(): section < 0";
         return -1;
     }
-    if (lab >= points.count()) {
-        qDebug() << "getPoints(): lab >= points.count()";
+    if (lab > points.count()) {
+        qDebug() << "getPoints(): lab > points.count()";
         return -1;
     }
-    if (section > points[lab].count()) {
+    if (section > points[lab-1].count()) {
         qDebug() << "getPoints(): section > points[lab].count()";
         return -1;
     }
-    qDebug() << "getPoints(): lab: " << lab << ", section: " << section << ", points: " << points.value(lab).value(section);
+    qDebug() << "getPoints(): lab: " << lab << ", section: " << section << ", points: " << points[lab-1][section-1];
     return points[lab-1][section-1];
 }
 
@@ -130,7 +130,7 @@ int ContestData::getCount(int p, int lab) const
     }
     else {
         for (int j = 0; j < points[lab-1].count(); j++) {
-            if (points[lab-1][j] == p) {result++; qDebug() << "++";}
+            if (points[lab-1][j] == p) result++;
         }
     }
     return result;

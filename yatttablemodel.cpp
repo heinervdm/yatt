@@ -194,14 +194,14 @@ bool YattTableModel::setPoints(const int driverId, const int lab, const int sect
         query.prepare("INSERT INTO points (driverId, lab, section, points) VALUES (?, ?, ?, ?)");
         query.bindValue(0, driverId);
         query.bindValue(1, lab);
-        query.bindValue(2, sections);
+        query.bindValue(2, section);
         query.bindValue(3, points);
         ok = query.exec();
     }
     if (ok) {
         for (int i = 0; i < contestData.count(); i++) {
             if (contestData[i]->getId() == driverId) {
-                contestData[i]->setPoints(lab, sections, points);
+                contestData[i]->setPoints(lab, section, points);
                 refresh();
                 return true;
             }
