@@ -36,12 +36,12 @@ ContestData::ContestData(const ContestData& cd) : QObject()
 ContestData::ContestData(int i, QString fname, QString lname, int labs, int sections) : id(i), firstname(fname), lastname(lname), QObject()
 {
     points.resize(labs);
-    for (int k = 1; k <= labs; k++) {
+    for (int k = 0; k < labs; k++) {
         QVector<int> l = QVector<int>(sections);
-        for (int j = 1; j<= sections; j++) {
-            l.insert(j, -1);
+        for (int j = 0; j < sections; j++) {
+            l[j] = -1;
         }
-        points.insert(k, l);
+        points[k] = l;
     }
 }
 
@@ -73,7 +73,7 @@ QString ContestData::getLastName() const
 void ContestData::setPoints(int lab, int section, int p)
 {
     qDebug() << "setPoints(): lab: " << lab << ", section: " << section << ", points: " << p;
-    points[lab].insert(section, p);
+    points[lab-1][section-1] = p;
 }
 
 
@@ -96,7 +96,7 @@ int ContestData::getPoints(int lab, int section) const
         return -1;
     }
     qDebug() << "getPoints(): lab: " << lab << ", section: " << section << ", points: " << points.value(lab).value(section);
-    return points[lab][section];
+    return points[lab-1][section-1];
 }
 
 int ContestData::getResult(int lab) const
@@ -111,8 +111,8 @@ int ContestData::getResult(int lab) const
     }
     else {
         if (lab >= points.count()) return -1;
-        for (int j = 0; j < points[lab].count(); j++) {
-            if (points[lab][j] > 0 ) result += points[lab][j];
+        for (int j = 0; j < points[lab-1].count(); j++) {
+            if (points[lab-1][j] > 0 ) result += points[lab-1][j];
         }
     }
     return result;
@@ -129,8 +129,8 @@ int ContestData::getCount(int p, int lab) const
         }
     }
     else {
-        for (int j = 0; j < points[lab].count(); j++) {
-            if (points[lab][j] == p) result++;
+        for (int j = 0; j < points[lab-1].count(); j++) {
+            if (points[lab-1][j] == p) {result++; qDebug() << "++";}
         }
     }
     return result;

@@ -69,8 +69,8 @@ Qt::ItemFlags YattTableModel::flags(
     int idx = index.column() - 3;
     int lab = idx/(sections + 2) + 1;
     int section = idx%(sections + 2) + 1;
-    if (lab > 0 && section > 0 && lab < labs && section < sections) flags |= Qt::ItemIsEditable;
-    else flags &=~ Qt::ItemIsSelectable;
+    if (lab > 0 && section > 0 && lab <= labs && section <= sections) flags |= Qt::ItemIsEditable;
+    else flags &= Qt::ItemIsSelectable;
     return flags;
 }
 
