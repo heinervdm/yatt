@@ -18,34 +18,88 @@
 
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
-
+#include <QtGui/QLineEdit>
+#include <QtGui/QDateEdit>
 
 
 #include "adddriver.h"
+#include <QPushButton>
 
 AddDriver::AddDriver(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
 {
-  QGridLayout *g = new QGridLayout(parent);
-  setLayout(g);
-  QLabel *l = new QLabel(QObject::tr("Add new driver:"));
-  g->addWidget(l, 0, 0, 0, 2, Qt::AlignHCenter);
-  
-  QLabel *firstname = new QLabel(QObject::tr("Firstname:"));
-  g->addWidget(firstname, 1, 0, Qt::AlignLeft);
-  QLabel *lastname = new QLabel(QObject::tr("Lastname:"));
-  g->addWidget(lastname, 2, 0, Qt::AlignLeft);
-  QLabel *club = new QLabel(QObject::tr("Club:"));
-  g->addWidget(club, 3, 0, Qt::AlignLeft);
-  QLabel *motobike = new QLabel(QObject::tr("Motobike:"));
-  g->addWidget(motobike, 4, 0, Qt::AlignLeft);
-  QLabel *street = new QLabel(QObject::tr("Street:"));
-  g->addWidget(street, 5, 0, Qt::AlignLeft);
-  QLabel *postalcode = new QLabel(QObject::tr("Postalcode:"));
-  g->addWidget(postalcode, 6, 2, 0, Qt::AlignLeft);
-  QLabel *city = new QLabel(QObject::tr("City:"));
-  g->addWidget(city, 7, 0, Qt::AlignLeft);
-  QLabel *birthdate = new QLabel(QObject::tr("Birthdate:"));
-  g->addWidget(birthdate, 8, 0, Qt::AlignLeft);
-  
+  initWindow(parent);
 }
 
+void AddDriver::initWindow(QWidget *parent) {
+  setWindowTitle(QObject::tr("Add new driver:"));
+  QGridLayout *g = new QGridLayout(parent);
+  setLayout(g);
+  
+  QLabel *firstname = new QLabel(QObject::tr("Firstname:"));
+  g->addWidget(firstname, 0, 0, Qt::AlignLeft);
+  QLineEdit *firstnameInput = new QLineEdit(this);
+  firstname->setBuddy(firstnameInput);
+  g->addWidget(firstnameInput,0,1);
+  
+  QLabel *lastname = new QLabel(QObject::tr("Lastname:"));
+  g->addWidget(lastname, 1, 0, Qt::AlignLeft);
+  QLineEdit *lastnameInput = new QLineEdit(this);
+  lastname->setBuddy(lastnameInput);
+  g->addWidget(lastnameInput, 1, 1);
+  
+  QLabel *club = new QLabel(QObject::tr("Club:"));
+  g->addWidget(club, 2, 0, Qt::AlignLeft);
+  QLineEdit *clubInput = new QLineEdit(this);
+  club->setBuddy(clubInput);
+  g->addWidget(clubInput, 2, 1);
+  
+  QLabel *motobike = new QLabel(QObject::tr("Motobike:"));
+  g->addWidget(motobike, 3, 0, Qt::AlignLeft);
+  QLineEdit *motobikeInput = new QLineEdit(this);
+  motobike->setBuddy(motobikeInput);
+  g->addWidget(motobikeInput, 3, 1);
+  
+  QLabel *street = new QLabel(QObject::tr("Street:"));
+  g->addWidget(street, 4, 0, Qt::AlignLeft);
+  QLineEdit *streetInput = new QLineEdit(this);
+  street->setBuddy(streetInput);
+  g->addWidget(streetInput, 4, 1);
+  
+  QLabel *postalcode = new QLabel(QObject::tr("Postalcode:"));
+  g->addWidget(postalcode, 5, 0, Qt::AlignLeft);
+  QLineEdit *postalcodeInput = new QLineEdit(this);
+  postalcode->setBuddy(postalcodeInput);
+  g->addWidget(postalcodeInput, 5, 1);
+
+  QLabel *city = new QLabel(QObject::tr("City:"));
+  g->addWidget(city, 6, 0, Qt::AlignLeft);
+  QLineEdit *cityInput = new QLineEdit(this);
+  city->setBuddy(cityInput);
+  g->addWidget(cityInput, 6, 1);
+  
+  QLabel *birthdate = new QLabel(QObject::tr("Birthdate:"));
+  g->addWidget(birthdate, 7, 0, Qt::AlignLeft);
+  QDateEdit *birthdateInput = new QDateEdit(this);
+  birthdate->setBuddy(birthdateInput);
+  g->addWidget(birthdateInput, 7, 1);
+ 
+  
+  QPushButton *b = new QPushButton(QObject::tr("Insert Driver"));
+  g->addWidget(b, 8,0, Qt::AlignHCenter);
+  QObject::connect(b,SIGNAL(clicked(bool)), this, SLOT(insertClicked()));
+  
+  QPushButton *c = new QPushButton(QObject::tr("Cancel"));
+  g->addWidget(c, 8, 1, Qt::AlignHCenter);
+  QObject::connect(c, SIGNAL(clicked(bool)), this, SLOT(cancelClicked()));
+}
+
+void AddDriver::insertClicked()
+{
+  emit(driverAdded());
+  close();
+}
+
+void AddDriver::cancelClicked()
+{
+  close();
+}

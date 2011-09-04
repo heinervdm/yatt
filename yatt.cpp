@@ -59,7 +59,7 @@ Yatt::Yatt()
 void Yatt::addDriverButtonClicked()
 {
     qDebug() << "addDriver()";
-    AddDriver *ad = new AddDriver(this);
+    AddDriver *ad = new AddDriver();
     ad->show();
 }
 

@@ -27,6 +27,16 @@ class AddDriver : public QWidget
 
 public:
 AddDriver(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+signals:
+  void driverAdded();
+
+private:
+  void initWindow(QWidget *parent);
+  
+private slots:
+  void insertClicked();
+  void cancelClicked();
 };
 
 #endif // ADDDRIVER_H
