@@ -44,6 +44,11 @@ ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString clas
   
 }
 
+void ContestTable::refresh()
+{
+    model->refresh();
+}
+
 QString ContestTable::getTitle()
 {
     return className;

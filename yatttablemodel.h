@@ -39,10 +39,10 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int sec, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    void refresh();
 
 private:
     bool setPoints(const int driverId, const int lab, const int section, const int points);
-    void refresh();
     QSqlDatabase dataBase;
     const int labs;
     const int sections;

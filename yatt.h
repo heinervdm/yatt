@@ -4,6 +4,7 @@
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
 #include "drivertable.h"
+#include "contesttable.h"
 
 class Yatt : public QMainWindow
 {
@@ -16,6 +17,7 @@ public:
 private:
     DriverTable *drivertable;
     QSqlDatabase db;
+    ContestTable *contestTable;
     
 private slots:
     void addDriverButtonClicked();

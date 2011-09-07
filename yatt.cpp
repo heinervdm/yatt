@@ -50,8 +50,8 @@ Yatt::Yatt()
     tab->addTab(dw, QObject::tr("Drivers"));
     connect(b, SIGNAL(clicked(bool)), this, SLOT(addDriverButtonClicked()));
     
-    ContestTable *ct = new ContestTable(db, labs, sections, "test", 0);
-    tab->addTab(ct, ct->getTitle());
+    contestTable = new ContestTable(db, labs, sections, "test", 0);
+    tab->addTab(contestTable, contestTable->getTitle());
     
     tab->show();
 }
@@ -62,12 +62,13 @@ void Yatt::addDriverButtonClicked()
     AddDriver *ad = new AddDriver(db);
     ad->show();
     QObject::connect(ad, SIGNAL(driverAdded()), drivertable, SLOT(refresh()));
-  
+    QObject::connect(ad, SIGNAL(driverAdded()), contestTable, SLOT(refresh())); 
 }
 
 
 Yatt::~Yatt()
 {
   delete drivertable;
+  delete contestTable;
   db.close();
 }
