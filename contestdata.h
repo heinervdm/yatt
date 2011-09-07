@@ -22,7 +22,7 @@
 
 #include <QString>
 #include <QVector>
-#include <qobject.h>
+#include <QObject>
 
 class ContestData : public QObject
 {

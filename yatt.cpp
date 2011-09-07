@@ -10,12 +10,11 @@
 #include <QObject>
 
 #include "contesttable.h"
-#include "drivertable.h"
 #include "adddriver.h"
 
 Yatt::Yatt()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("/home/thomas/test.db");
     if ( !db.open() )
     {
@@ -43,8 +42,8 @@ Yatt::Yatt()
     QWidget *dw = new QWidget();
     QGridLayout *g = new QGridLayout();
     dw->setLayout(g);
-    DriverTable *dt =  new DriverTable(db, 0);
-    g->addWidget(dt,0,0);
+    drivertable =  new DriverTable(db, 0);
+    g->addWidget(drivertable,0,0);
     QPushButton *b = new QPushButton(QObject::tr("Add Driver"));
     g->addWidget(b,1,0);
     tab->addTab(dw, QObject::tr("Drivers"));
@@ -59,12 +58,16 @@ Yatt::Yatt()
 void Yatt::addDriverButtonClicked()
 {
     qDebug() << "addDriver()";
-    AddDriver *ad = new AddDriver();
+    AddDriver *ad = new AddDriver(db);
     ad->show();
+    QObject::connect(ad, SIGNAL(driverAdded()), drivertable, SLOT(refresh()));
+  
 }
 
 
 Yatt::~Yatt()
-{}
+{
+  db.close();
+}
 
 #include "yatt.moc"

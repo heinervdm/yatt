@@ -19,6 +19,7 @@
 #include <QDebug>
 
 #include "contestdata.h"
+#include "contestdata.moc"
 
 ContestData::ContestData() : id(-1), QObject()
 {
@@ -135,5 +136,3 @@ int ContestData::getCount(int p, int lab) const
     }
     return result;
 }
-
-#include "contestdata.moc"

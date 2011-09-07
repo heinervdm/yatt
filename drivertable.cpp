@@ -22,13 +22,14 @@
 #include <QtGui>
 
 #include "drivertable.h"
+#include "drivertable.moc"
 
 DriverTable::DriverTable(QSqlDatabase db, QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
 {
   QGridLayout *g = new QGridLayout(this);
   this->setLayout(g);
   
-  QSqlTableModel *model = new QSqlTableModel(0, db);
+  model = new QSqlTableModel(0, db);
   model->setEditStrategy(QSqlTableModel::OnFieldChange);
   model->setTable("drivers");
   model->select();
@@ -51,3 +52,8 @@ DriverTable::DriverTable(QSqlDatabase db, QWidget* parent, Qt::WindowFlags f): Q
 
 }
 
+void DriverTable::refresh()
+{
+    model->submitAll();
+    model->select();
+}

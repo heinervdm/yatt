@@ -20,6 +20,8 @@
 #include <QDebug>
 
 #include "yatttablemodel.h"
+#include "yatttablemodel.moc"
+
 
 YattTableModel::YattTableModel(QSqlDatabase db, int l, int s, QString cn, QObject *parent)
         : dataBase(db), labs(l), sections(s), className(cn), QAbstractTableModel(parent)
@@ -209,5 +211,3 @@ bool YattTableModel::setPoints(const int driverId, const int lab, const int sect
     }
     return false;
 }
-
-#include "yatttablemodel.moc"

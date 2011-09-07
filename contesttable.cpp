@@ -15,10 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <QtGui/QGridLayout>
 
 #include "contesttable.h"
-#include <QGridLayout>
+#include "contesttable.moc"
 
 ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent) : className(className), QWidget(parent)
 {
@@ -48,5 +48,3 @@ QString ContestTable::getTitle()
 {
     return className;
 }
-
-#include "contesttable.moc"

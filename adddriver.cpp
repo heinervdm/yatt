@@ -18,14 +18,18 @@
 
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QDateEdit>
+#include <QtGui/QPushButton>
 
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+
+#include <QObject>
+#include <QDebug>
 
 #include "adddriver.h"
-#include <QPushButton>
+#include "adddriver.moc"
 
-AddDriver::AddDriver(QWidget* parent, Qt::WindowFlags f): QWidget(parent, f)
+AddDriver::AddDriver(QSqlDatabase db, QWidget* parent, Qt::WindowFlags f): sqldb(db), QWidget(parent, f)
 {
   initWindow(parent);
 }
@@ -37,56 +41,56 @@ void AddDriver::initWindow(QWidget *parent) {
   
   QLabel *firstname = new QLabel(QObject::tr("Firstname:"));
   g->addWidget(firstname, 0, 0, Qt::AlignLeft);
-  QLineEdit *firstnameInput = new QLineEdit(this);
+  firstnameInput = new QLineEdit(this);
   firstname->setBuddy(firstnameInput);
   g->addWidget(firstnameInput,0,1);
   
   QLabel *lastname = new QLabel(QObject::tr("Lastname:"));
   g->addWidget(lastname, 1, 0, Qt::AlignLeft);
-  QLineEdit *lastnameInput = new QLineEdit(this);
+  lastnameInput = new QLineEdit(this);
   lastname->setBuddy(lastnameInput);
   g->addWidget(lastnameInput, 1, 1);
   
   QLabel *club = new QLabel(QObject::tr("Club:"));
   g->addWidget(club, 2, 0, Qt::AlignLeft);
-  QLineEdit *clubInput = new QLineEdit(this);
+  clubInput = new QLineEdit(this);
   club->setBuddy(clubInput);
   g->addWidget(clubInput, 2, 1);
   
   QLabel *motobike = new QLabel(QObject::tr("Motobike:"));
   g->addWidget(motobike, 3, 0, Qt::AlignLeft);
-  QLineEdit *motobikeInput = new QLineEdit(this);
+  motobikeInput = new QLineEdit(this);
   motobike->setBuddy(motobikeInput);
   g->addWidget(motobikeInput, 3, 1);
   
   QLabel *street = new QLabel(QObject::tr("Street:"));
   g->addWidget(street, 4, 0, Qt::AlignLeft);
-  QLineEdit *streetInput = new QLineEdit(this);
+  streetInput = new QLineEdit(this);
   street->setBuddy(streetInput);
   g->addWidget(streetInput, 4, 1);
   
   QLabel *postalcode = new QLabel(QObject::tr("Postalcode:"));
   g->addWidget(postalcode, 5, 0, Qt::AlignLeft);
-  QLineEdit *postalcodeInput = new QLineEdit(this);
+  postalcodeInput = new QLineEdit(this);
   postalcode->setBuddy(postalcodeInput);
   g->addWidget(postalcodeInput, 5, 1);
 
   QLabel *city = new QLabel(QObject::tr("City:"));
   g->addWidget(city, 6, 0, Qt::AlignLeft);
-  QLineEdit *cityInput = new QLineEdit(this);
+  cityInput = new QLineEdit(this);
   city->setBuddy(cityInput);
   g->addWidget(cityInput, 6, 1);
   
   QLabel *birthdate = new QLabel(QObject::tr("Birthdate:"));
   g->addWidget(birthdate, 7, 0, Qt::AlignLeft);
-  QDateEdit *birthdateInput = new QDateEdit(this);
+  birthdateInput = new QDateEdit(this);
   birthdate->setBuddy(birthdateInput);
   g->addWidget(birthdateInput, 7, 1);
  
   
   QPushButton *b = new QPushButton(QObject::tr("Insert Driver"));
   g->addWidget(b, 8,0, Qt::AlignHCenter);
-  QObject::connect(b,SIGNAL(clicked(bool)), this, SLOT(insertClicked()));
+  QObject::connect(b, SIGNAL(clicked(bool)), this, SLOT(insertClicked()));
   
   QPushButton *c = new QPushButton(QObject::tr("Cancel"));
   g->addWidget(c, 8, 1, Qt::AlignHCenter);
@@ -95,11 +99,29 @@ void AddDriver::initWindow(QWidget *parent) {
 
 void AddDriver::insertClicked()
 {
-  emit(driverAdded());
+  commitDriverData();
+  emit driverAdded();
   close();
 }
 
 void AddDriver::cancelClicked()
 {
   close();
+}
+
+bool AddDriver::commitDriverData()
+{
+    QSqlQuery query = QSqlQuery(sqldb);
+    query.prepare("INSERT INTO driver (firstname, lastname, club, motobike, street, postalcode, city, birthdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    query.bindValue(0, firstnameInput->text());
+    query.bindValue(1, lastnameInput->text());
+    query.bindValue(2, clubInput->text());
+    query.bindValue(3, motobikeInput->text());
+    query.bindValue(4, streetInput->text());
+    query.bindValue(5, postalcodeInput->text());
+    query.bindValue(6, cityInput->text());
+    query.bindValue(7, birthdateInput->date());
+    bool ok = query.exec();
+    if (!ok) qDebug() << query.lastError();
+    return ok;
 }

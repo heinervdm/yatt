@@ -22,13 +22,19 @@
 
 #include <QtGui/QWidget>
 #include <QtSql/QSqlDatabase>
-
+#include <QtSql/QSqlTableModel>
 
 class DriverTable : public QWidget
 {
+  Q_OBJECT
 
 public:
-explicit DriverTable(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    DriverTable(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    
+    QSqlTableModel *model;
+    
+public slots:
+    void refresh();
 };
 
 #endif // DRIVERTABLE_H

@@ -21,18 +21,28 @@
 #define ADDDRIVER_H
 
 #include <QtGui/QWidget>
+#include <QtGui/QDateEdit>
+#include <QtGui/QLineEdit>
+#include <QtSql/QSqlDatabase>
 
 class AddDriver : public QWidget
 {
 
+  Q_OBJECT
+  
 public:
-AddDriver(QWidget* parent = 0, Qt::WindowFlags f = 0);
+  AddDriver(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 signals:
   void driverAdded();
 
 private:
   void initWindow(QWidget *parent);
+  bool commitDriverData();
+  QSqlDatabase sqldb;
+  QLineEdit *firstnameInput, *lastnameInput, *clubInput, *motobikeInput, *streetInput, *housenumberInput, *postalcodeInput, *cityInput;
+  QDateEdit *birthdateInput;
+ 
   
 private slots:
   void insertClicked();
