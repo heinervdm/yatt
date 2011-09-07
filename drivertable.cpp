@@ -33,16 +33,15 @@ DriverTable::DriverTable(QSqlDatabase db, QWidget* parent, Qt::WindowFlags f): Q
   model->setEditStrategy(QSqlTableModel::OnFieldChange);
   model->setTable("drivers");
   model->select();
-  model->removeColumn(0);
-  model->setHeaderData(0, Qt::Horizontal, tr("Firstname:"));
+  model->setHeaderData(0, Qt::Horizontal, tr("Id"));
+  model->setHeaderData(1, Qt::Horizontal, tr("Firstname:"));
   model->setHeaderData(1, Qt::Horizontal, tr("Lastname:"));
-  model->setHeaderData(2, Qt::Horizontal, tr("Club:"));
-  model->setHeaderData(3, Qt::Horizontal, tr("Motobike:"));
-  model->setHeaderData(4, Qt::Horizontal, tr("Street:"));
-  model->setHeaderData(5, Qt::Horizontal, tr("Housenumber:"));
-  model->setHeaderData(6, Qt::Horizontal, tr("Postalcode:"));
-  model->setHeaderData(7, Qt::Horizontal, tr("City:"));
-  model->setHeaderData(8, Qt::Horizontal, tr("Birthdate:"));
+  model->setHeaderData(3, Qt::Horizontal, tr("Club:"));
+  model->setHeaderData(4, Qt::Horizontal, tr("Motobike:"));
+  model->setHeaderData(5, Qt::Horizontal, tr("Street:"));
+  model->setHeaderData(7, Qt::Horizontal, tr("Postalcode:"));
+  model->setHeaderData(8, Qt::Horizontal, tr("City:"));
+  model->setHeaderData(9, Qt::Horizontal, tr("Birthdate:"));
 
   QTableView *drivertable = new QTableView();
   drivertable->setModel(model);

@@ -1,5 +1,3 @@
-#include "yatt.h"
-
 #include <QtGui/QTableView>
 #include <QtGui/QGridLayout>
 #include <QtGui/QBoxLayout>
@@ -11,6 +9,9 @@
 
 #include "contesttable.h"
 #include "adddriver.h"
+
+#include "yatt.h"
+#include "yatt.moc"
 
 Yatt::Yatt()
 {
@@ -27,7 +28,7 @@ Yatt::Yatt()
     int sections = 12;
 
     QSqlQuery qry;
-    qry.prepare( "CREATE TABLE IF NOT EXISTS drivers (id INTEGER UNIQUE PRIMARY KEY, firstname VARCHAR(30), lastname VARCHAR(30), club VARCHAR(30), motobike VARCHAR(30), street VARCHAR(50), housenumber VARCHAR(10), postalcode VARCHAR(6), city VARCHAR(30), birtdate DATE)" );
+    qry.prepare( "CREATE TABLE IF NOT EXISTS drivers (id INTEGER UNIQUE PRIMARY KEY, firstname VARCHAR(30), lastname VARCHAR(30), club VARCHAR(30), motobike VARCHAR(30), street VARCHAR(50), postalcode VARCHAR(6), city VARCHAR(30), birthdate DATE)" );
     if ( !qry.exec() ) qDebug() << qry.lastError();
     else qDebug() << "Driver table created!";
 
@@ -70,5 +71,3 @@ Yatt::~Yatt()
   delete drivertable;
   db.close();
 }
-
-#include "yatt.moc"
