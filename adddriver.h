@@ -28,25 +28,25 @@
 class AddDriver : public QWidget
 {
 
-  Q_OBJECT
-  
+    Q_OBJECT
+
 public:
-  AddDriver(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
-  virtual ~AddDriver();
+    AddDriver(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    virtual ~AddDriver();
 signals:
-  void driverAdded();
+    void driverAdded();
 
 private:
-  void initWindow(QWidget *parent);
-  bool commitDriverData();
-  QSqlDatabase sqldb;
-  QLineEdit *firstnameInput, *lastnameInput, *clubInput, *motobikeInput, *streetInput, *housenumberInput, *postalcodeInput, *cityInput;
-  QDateEdit *birthdateInput;
- 
-  
+    void initWindow(QWidget *parent);
+    bool commitDriverData();
+    QSqlDatabase sqldb;
+    QLineEdit *firstnameInput, *lastnameInput, *clubInput, *motobikeInput, *streetInput, *housenumberInput, *postalcodeInput, *cityInput;
+    QDateEdit *birthdateInput;
+
+
 private slots:
-  void insertClicked();
-  void cancelClicked();
+    void insertClicked();
+    void cancelClicked();
 };
 
 #endif // ADDDRIVER_H

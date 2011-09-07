@@ -8,20 +8,20 @@
 
 class Yatt : public QMainWindow
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     Yatt();
     virtual ~Yatt();
-    
+
 private:
     DriverTable *drivertable;
     QSqlDatabase db;
     ContestTable *contestTable;
-    
+
 private slots:
     void addDriverButtonClicked();
-    
+
 };
 
 #endif // yatt_H

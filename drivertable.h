@@ -26,13 +26,13 @@
 
 class DriverTable : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     DriverTable(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
     virtual ~DriverTable();
     QSqlTableModel *model;
-    
+
 public slots:
     void refresh();
 };

@@ -33,7 +33,7 @@ class ContestTable: public QWidget
 public:
     ContestTable(QSqlDatabase db, int labs, int sections, QString className, QWidget *parent = 0);
     QString getTitle();
-    
+
 public slots:
     void refresh();
 

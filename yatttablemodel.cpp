@@ -15,13 +15,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include <QtSql>
 #include <QDebug>
 
 #include "yatttablemodel.h"
 #include "yatttablemodel.moc"
-
 
 YattTableModel::YattTableModel(QSqlDatabase db, int l, int s, QString cn, QObject *parent)
         : dataBase(db), labs(l), sections(s), className(cn), QAbstractTableModel(parent)
@@ -31,34 +29,36 @@ YattTableModel::YattTableModel(QSqlDatabase db, int l, int s, QString cn, QObjec
 
 YattTableModel::~YattTableModel()
 {
-  dataBase.close();
+    dataBase.close();
 }
 
 QVariant YattTableModel::headerData(int sec, Qt::Orientation orientation, int role) const
 {
     QVariant v;
-    if (role & ~(Qt::DisplayRole)){return v;}
+    if (role & ~(Qt::DisplayRole)) {
+        return v;
+    }
     if (orientation == Qt::Vertical) v = QVariant(sec);
     else {
-      if (sec > 2) {
-          int idx = sec - 3;
-	  int lab = idx/(sections + 2) + 1;
-	  int section = idx%(sections + 2) + 1;
-	  if (lab <= labs && section <= sections) v = QVariant(section);
-	  else if (lab <= labs && section == sections+1) v = QVariant(QObject::tr("Sum"));
-	  else if (lab <= labs && section == sections+2) v = QVariant(QObject::tr("Zeros"));
-	  else if (sec == (3+(labs*(sections+2)))) v = QVariant(QObject::tr("Total"));
-	  else if (sec == (4+(labs*(sections+2)))) v = QVariant(QObject::tr("Zeros"));
-	  else if (sec == (5+(labs*(sections+2)))) v = QVariant(QObject::tr("Ones"));
-	  else if (sec == (6+(labs*(sections+2)))) v = QVariant(QObject::tr("Twos"));
-	  else if (sec == (7+(labs*(sections+2)))) v = QVariant(QObject::tr("Threes"));
-	  else if (sec == (8+(labs*(sections+2)))) v = QVariant(QObject::tr("Fives"));
-      }
-      else {
-	if (sec == 0) v = QVariant(("Id"));
-	else if (sec == 1) v = QVariant(("Firstname"));
-	else if (sec == 2) v = QVariant(("Lastname"));
-      }
+        if (sec > 2) {
+            int idx = sec - 3;
+            int lab = idx/(sections + 2) + 1;
+            int section = idx%(sections + 2) + 1;
+            if (lab <= labs && section <= sections) v = QVariant(section);
+            else if (lab <= labs && section == sections+1) v = QVariant(QObject::tr("Sum"));
+            else if (lab <= labs && section == sections+2) v = QVariant(QObject::tr("Zeros"));
+            else if (sec == (3+(labs*(sections+2)))) v = QVariant(QObject::tr("Total"));
+            else if (sec == (4+(labs*(sections+2)))) v = QVariant(QObject::tr("Zeros"));
+            else if (sec == (5+(labs*(sections+2)))) v = QVariant(QObject::tr("Ones"));
+            else if (sec == (6+(labs*(sections+2)))) v = QVariant(QObject::tr("Twos"));
+            else if (sec == (7+(labs*(sections+2)))) v = QVariant(QObject::tr("Threes"));
+            else if (sec == (8+(labs*(sections+2)))) v = QVariant(QObject::tr("Fives"));
+        }
+        else {
+            if (sec == 0) v = QVariant(("Id"));
+            else if (sec == 1) v = QVariant(("Firstname"));
+            else if (sec == 2) v = QVariant(("Lastname"));
+        }
     }
     return v;
 }
@@ -80,8 +80,12 @@ Qt::ItemFlags YattTableModel::flags(
 QVariant YattTableModel::data(const QModelIndex& idx, int role) const
 {
     QVariant v;
-    if (!idx.isValid()) {return v;}
-    if (role & ~(Qt::DisplayRole | Qt::EditRole)){return v;}
+    if (!idx.isValid()) {
+        return v;
+    }
+    if (role & ~(Qt::DisplayRole | Qt::EditRole)) {
+        return v;
+    }
 
     qDebug() << "data(): row: " << idx.row();
     ContestData *cd = contestData[idx.row()];
@@ -143,19 +147,25 @@ bool YattTableModel::setData(const QModelIndex &index, const QVariant &value, in
 void YattTableModel::refresh()
 {
     qDebug() << "refresh()";
+
+    beginRemoveRows(QModelIndex(), 0, qMax(contestData.count(), 0));
+    contestData.clear();
+    contestData.resize(0);
+    endRemoveRows();
+
     QSqlQuery query = QSqlQuery(dataBase);
     query.prepare("SELECT id, firstname, lastname FROM drivers ORDER BY lastname, firstname;");
     if ( !query.exec() ) qDebug() << "refresh(): " << query.lastError();
     else {
         int i = 0;
-        contestData.clear();
         if (dataBase.driver()->hasFeature(QSqlDriver::QuerySize)) contestData.resize(query.size());
         else {
-	  int ret = 0;
-	  QSqlQuery query3 = QSqlQuery("SELECT count(id) FROM drivers", dataBase);
-	  if (query3.exec() && query3.next()) ret = query3.value(0).toInt();
-	  contestData.resize(ret);
-	}
+            int ret = 0;
+            QSqlQuery query3 = QSqlQuery("SELECT count(id) FROM drivers", dataBase);
+            if (query3.exec() && query3.next()) ret = query3.value(0).toInt();
+            contestData.resize(ret);
+        }
+        beginInsertRows(QModelIndex(), 0, qMax(0, contestData.count()-1);
         while (query.next()) {
             int id = query.value(0).toInt();
             QString firstname = query.value(1).toString();
@@ -172,6 +182,7 @@ void YattTableModel::refresh()
             contestData[i] = d;
             i++;
         }
+        endInsertRows();
     }
     for (int i = 0; i < contestData.count(); i++) qDebug() << "refresh: i=" << i << "id=" << contestData[i]->getId() << "firstname=" << contestData[i]->getFirstName();
 }

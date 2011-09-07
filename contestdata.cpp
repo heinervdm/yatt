@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include <QDebug>
 
 #include "contestdata.h"
@@ -106,7 +105,7 @@ int ContestData::getResult(int lab) const
     if (lab == 0) {
         for (int i = 0; i < points.count(); i++) {
             for (int j = 0; j < points[i].count(); j++) {
-	        if (points[i][j] > 0 ) result += points[i][j];
+                if (points[i][j] > 0 ) result += points[i][j];
             }
         }
     }

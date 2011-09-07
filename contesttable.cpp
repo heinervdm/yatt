@@ -24,7 +24,7 @@ ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString clas
 {
     QGridLayout *g = new QGridLayout();
     this->setLayout(g);
-  
+
     model = new YattTableModel(db, labs, sections, className);
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("First name"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Last name"));
@@ -41,7 +41,7 @@ ContestTable::ContestTable(QSqlDatabase db, int labs, int sections, QString clas
     view->resizeColumnsToContents();
     view->hideColumn(0);
     g->addWidget(view, 0, 0);
-  
+
 }
 
 void ContestTable::refresh()
