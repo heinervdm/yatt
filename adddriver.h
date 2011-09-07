@@ -32,7 +32,7 @@ class AddDriver : public QWidget
   
 public:
   AddDriver(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
-
+  virtual ~AddDriver();
 signals:
   void driverAdded();
 

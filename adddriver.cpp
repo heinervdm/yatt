@@ -112,7 +112,7 @@ void AddDriver::cancelClicked()
 bool AddDriver::commitDriverData()
 {
     QSqlQuery query = QSqlQuery(sqldb);
-    query.prepare("INSERT INTO driver (firstname, lastname, club, motobike, street, postalcode, city, birthdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO drivers (firstname, lastname, club, motobike, street, postalcode, city, birthdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     query.bindValue(0, firstnameInput->text());
     query.bindValue(1, lastnameInput->text());
     query.bindValue(2, clubInput->text());
@@ -124,4 +124,17 @@ bool AddDriver::commitDriverData()
     bool ok = query.exec();
     if (!ok) qDebug() << query.lastError();
     return ok;
+}
+
+AddDriver::~AddDriver()
+{
+  delete firstnameInput;
+  delete lastnameInput;
+  delete clubInput;
+  delete motobikeInput;
+  delete streetInput;
+  delete postalcodeInput;
+  delete cityInput;
+  delete birthdateInput;
+  sqldb.close();
 }

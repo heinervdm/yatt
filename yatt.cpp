@@ -67,6 +67,7 @@ void Yatt::addDriverButtonClicked()
 
 Yatt::~Yatt()
 {
+  delete drivertable;
   db.close();
 }
 

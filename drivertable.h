@@ -30,7 +30,7 @@ class DriverTable : public QWidget
 
 public:
     DriverTable(QSqlDatabase db, QWidget* parent = 0, Qt::WindowFlags f = 0);
-    
+    virtual ~DriverTable();
     QSqlTableModel *model;
     
 public slots:

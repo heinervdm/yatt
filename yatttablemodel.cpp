@@ -31,6 +31,7 @@ YattTableModel::YattTableModel(QSqlDatabase db, int l, int s, QString cn, QObjec
 
 YattTableModel::~YattTableModel()
 {
+  dataBase.close();
 }
 
 QVariant YattTableModel::headerData(int sec, Qt::Orientation orientation, int role) const

@@ -57,3 +57,8 @@ void DriverTable::refresh()
     model->submitAll();
     model->select();
 }
+
+DriverTable::~DriverTable()
+{
+    delete model;
+}
