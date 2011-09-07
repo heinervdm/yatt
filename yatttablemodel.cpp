@@ -148,7 +148,7 @@ void YattTableModel::refresh()
 {
     qDebug() << "refresh()";
 
-    beginRemoveRows(QModelIndex(), 0, qMax(contestData.count(), 0));
+    beginRemoveRows(QModelIndex(), 0, qMax(contestData.count()-1, 0));
     contestData.clear();
     contestData.resize(0);
     endRemoveRows();
@@ -165,7 +165,7 @@ void YattTableModel::refresh()
             if (query3.exec() && query3.next()) ret = query3.value(0).toInt();
             contestData.resize(ret);
         }
-        beginInsertRows(QModelIndex(), 0, qMax(0, contestData.count()-1);
+        beginInsertRows(QModelIndex(), 0, qMax(0, contestData.count()-1));
         while (query.next()) {
             int id = query.value(0).toInt();
             QString firstname = query.value(1).toString();
